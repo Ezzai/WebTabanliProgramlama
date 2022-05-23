@@ -1,0 +1,462 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AgacSatisWebModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Authorities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="varchar" MaxLength="50" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="char" MaxLength="20" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TreeOrders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="TreeId" Type="int" />
+        </EntityType>
+        <EntityType Name="Trees">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TreeTypeId" Type="int" />
+          <Property Name="UnitPrice" Type="money" />
+          <Property Name="UnitsInStock" Type="smallint" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TreeTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UserAuthorities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="AuthorityId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="PasswordHash" Type="binary" MaxLength="500" />
+          <Property Name="PasswordSalt" Type="binary" MaxLength="500" />
+          <Property Name="Status" Type="bit" />
+        </EntityType>
+        <Association Name="FK_TreeOrders_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="TreeOrders" Type="Self.TreeOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TreeOrders">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TreeOrders_Trees">
+          <End Role="Trees" Type="Self.Trees" Multiplicity="0..1" />
+          <End Role="TreeOrders" Type="Self.TreeOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TreeOrders">
+              <PropertyRef Name="TreeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trees_TreeType">
+          <End Role="TreeTypes" Type="Self.TreeTypes" Multiplicity="0..1" />
+          <End Role="Trees" Type="Self.Trees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TreeTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Trees">
+              <PropertyRef Name="TreeTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAuthorities_Authorities">
+          <End Role="Authorities" Type="Self.Authorities" Multiplicity="1" />
+          <End Role="UserAuthorities" Type="Self.UserAuthorities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authorities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserAuthorities">
+              <PropertyRef Name="AuthorityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAuthorities_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserAuthorities" Type="Self.UserAuthorities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserAuthorities">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AgacSatisWebModelStoreContainer">
+          <EntitySet Name="Authorities" EntityType="Self.Authorities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TreeOrders" EntityType="Self.TreeOrders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trees" EntityType="Self.Trees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TreeTypes" EntityType="Self.TreeTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAuthorities" EntityType="Self.UserAuthorities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TreeOrders_Customers" Association="Self.FK_TreeOrders_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="TreeOrders" EntitySet="TreeOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TreeOrders_Trees" Association="Self.FK_TreeOrders_Trees">
+            <End Role="Trees" EntitySet="Trees" />
+            <End Role="TreeOrders" EntitySet="TreeOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trees_TreeType" Association="Self.FK_Trees_TreeType">
+            <End Role="TreeTypes" EntitySet="TreeTypes" />
+            <End Role="Trees" EntitySet="Trees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAuthorities_Authorities" Association="Self.FK_UserAuthorities_Authorities">
+            <End Role="Authorities" EntitySet="Authorities" />
+            <End Role="UserAuthorities" EntitySet="UserAuthorities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAuthorities_Users" Association="Self.FK_UserAuthorities_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserAuthorities" EntitySet="UserAuthorities" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AgacSatisWebModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Authorities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="UserAuthorities" Relationship="Self.FK_UserAuthorities_Authorities" FromRole="Authorities" ToRole="UserAuthorities" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TreeOrders" Relationship="Self.FK_TreeOrders_Customers" FromRole="Customers" ToRole="TreeOrders" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TreeOrders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="TreeId" Type="Int32" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK_TreeOrders_Customers" FromRole="TreeOrders" ToRole="Customers" />
+          <NavigationProperty Name="Trees" Relationship="Self.FK_TreeOrders_Trees" FromRole="TreeOrders" ToRole="Trees" />
+        </EntityType>
+        <EntityType Name="Trees">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TreeTypeId" Type="Int32" />
+          <Property Name="UnitPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="UnitsInStock" Type="Int16" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TreeOrders" Relationship="Self.FK_TreeOrders_Trees" FromRole="Trees" ToRole="TreeOrders" />
+          <NavigationProperty Name="TreeTypes" Relationship="Self.FK_Trees_TreeType" FromRole="Trees" ToRole="TreeTypes" />
+        </EntityType>
+        <EntityType Name="TreeTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Trees" Relationship="Self.FK_Trees_TreeType" FromRole="TreeTypes" ToRole="Trees" />
+        </EntityType>
+        <EntityType Name="UserAuthorities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="AuthorityId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Authorities" Relationship="Self.FK_UserAuthorities_Authorities" FromRole="UserAuthorities" ToRole="Authorities" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_UserAuthorities_Users" FromRole="UserAuthorities" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PasswordHash" Type="Binary" MaxLength="500" FixedLength="true" />
+          <Property Name="PasswordSalt" Type="Binary" MaxLength="500" FixedLength="true" />
+          <Property Name="Status" Type="Boolean" />
+          <NavigationProperty Name="UserAuthorities" Relationship="Self.FK_UserAuthorities_Users" FromRole="Users" ToRole="UserAuthorities" />
+        </EntityType>
+        <Association Name="FK_UserAuthorities_Authorities">
+          <End Role="Authorities" Type="Self.Authorities" Multiplicity="1" />
+          <End Role="UserAuthorities" Type="Self.UserAuthorities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Authorities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserAuthorities">
+              <PropertyRef Name="AuthorityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TreeOrders_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="TreeOrders" Type="Self.TreeOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TreeOrders">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TreeOrders_Trees">
+          <End Role="Trees" Type="Self.Trees" Multiplicity="0..1" />
+          <End Role="TreeOrders" Type="Self.TreeOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TreeOrders">
+              <PropertyRef Name="TreeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trees_TreeType">
+          <End Role="TreeTypes" Type="Self.TreeTypes" Multiplicity="0..1" />
+          <End Role="Trees" Type="Self.Trees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TreeTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Trees">
+              <PropertyRef Name="TreeTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAuthorities_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserAuthorities" Type="Self.UserAuthorities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserAuthorities">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Authorities" EntityType="Self.Authorities" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="TreeOrders" EntityType="Self.TreeOrders" />
+          <EntitySet Name="Trees" EntityType="Self.Trees" />
+          <EntitySet Name="TreeTypes" EntityType="Self.TreeTypes" />
+          <EntitySet Name="UserAuthorities" EntityType="Self.UserAuthorities" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_UserAuthorities_Authorities" Association="Self.FK_UserAuthorities_Authorities">
+            <End Role="Authorities" EntitySet="Authorities" />
+            <End Role="UserAuthorities" EntitySet="UserAuthorities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TreeOrders_Customers" Association="Self.FK_TreeOrders_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="TreeOrders" EntitySet="TreeOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TreeOrders_Trees" Association="Self.FK_TreeOrders_Trees">
+            <End Role="Trees" EntitySet="Trees" />
+            <End Role="TreeOrders" EntitySet="TreeOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trees_TreeType" Association="Self.FK_Trees_TreeType">
+            <End Role="TreeTypes" EntitySet="TreeTypes" />
+            <End Role="Trees" EntitySet="Trees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAuthorities_Users" Association="Self.FK_UserAuthorities_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserAuthorities" EntitySet="UserAuthorities" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AgacSatisWebModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Authorities">
+            <EntityTypeMapping TypeName="AgacSatisWebModel.Authorities">
+              <MappingFragment StoreEntitySet="Authorities">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="AgacSatisWebModel.Customers">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="AgacSatisWebModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TreeOrders">
+            <EntityTypeMapping TypeName="AgacSatisWebModel.TreeOrders">
+              <MappingFragment StoreEntitySet="TreeOrders">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trees">
+            <EntityTypeMapping TypeName="AgacSatisWebModel.Trees">
+              <MappingFragment StoreEntitySet="Trees">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TreeTypeId" ColumnName="TreeTypeId" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="UnitsInStock" ColumnName="UnitsInStock" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TreeTypes">
+            <EntityTypeMapping TypeName="AgacSatisWebModel.TreeTypes">
+              <MappingFragment StoreEntitySet="TreeTypes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserAuthorities">
+            <EntityTypeMapping TypeName="AgacSatisWebModel.UserAuthorities">
+              <MappingFragment StoreEntitySet="UserAuthorities">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="AuthorityId" ColumnName="AuthorityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="AgacSatisWebModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

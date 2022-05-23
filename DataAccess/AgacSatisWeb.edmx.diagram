@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="68f8e2e7f37e4c83b2ef9873132960e8" Name="Diagram1" ZoomLevel="73">
+        <EntityTypeShape EntityType="AgacSatisWebModel.Authorities" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AgacSatisWebModel.Customers" Width="1.5" PointX="11.125" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AgacSatisWebModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AgacSatisWebModel.TreeOrders" Width="1.5" PointX="7.25" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AgacSatisWebModel.Trees" Width="1.5" PointX="5" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="AgacSatisWebModel.TreeTypes" Width="1.5" PointX="2.75" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AgacSatisWebModel.UserAuthorities" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AgacSatisWebModel.Users" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <AssociationConnector Association="AgacSatisWebModel.FK_UserAuthorities_Authorities" ManuallyRouted="false" />
+        <AssociationConnector Association="AgacSatisWebModel.FK_TreeOrders_Customers" ManuallyRouted="false" />
+        <AssociationConnector Association="AgacSatisWebModel.FK_TreeOrders_Trees" ManuallyRouted="false" />
+        <AssociationConnector Association="AgacSatisWebModel.FK_Trees_TreeType" ManuallyRouted="false" />
+        <AssociationConnector Association="AgacSatisWebModel.FK_UserAuthorities_Users" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
